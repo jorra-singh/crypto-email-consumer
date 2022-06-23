@@ -2,6 +2,6 @@
 module.exports = {
   reactStrictMode: true,
   env : {
-    key : "CUSTOMENCRYPTIONKEY"
+    key : process.env.KEY
   }
 } 
