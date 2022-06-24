@@ -20,8 +20,8 @@ export default function Email() {
   }, [router.isReady]);
 
   return decryptedEmail === "" ? (
-    <div>Loading</div>
+    <div>Loading...</div>
   ) : (
-    <div>{decryptedEmail}</div>
+    <div>Welcome, {decryptedEmail}!</div>
   );
 }
