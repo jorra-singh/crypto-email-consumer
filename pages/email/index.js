@@ -4,33 +4,24 @@ import { useRouter } from "next/router";
 
 export default function Email() {
   const router = useRouter();
-  const [routerReady, setRouterReady] = useState(false);
-
-  //Wait until the router is ready
-  useEffect(() => {
+  const [decryptedEmail, setDecryptedEmail] = useState("");
+  const fetchPlaintext = async () => {
+    
     if(router.isReady) {
-        setRouterReady(true);
+      const email = router.query.email;
+      const resp = await fetch(`/api/email/${email}`);
+      const data = await resp.json();
+      setDecryptedEmail(data.email);
     }
+  };
+
+  useEffect(() => {
+    fetchPlaintext();
   }, [router.isReady]);
 
-  const renderEncryptedData = () => {
-    if (routerReady) {
-        //Parse through the query string to get the encrypted email parameter
-        const queryString = router.query;
-        const cipherTextEmail = queryString.email;
-
-        //Decrypt the ciphertext
-        var decrypted = CryptoJS.AES.decrypt(cipherTextEmail.toString(), process.env.key);
-
-        //render the deciphered email to the user
-        return (
-        <div>Hello, {decrypted.toString(CryptoJS.enc.Utf8)}</div>
-        )
-    } else {
-        //If the router is NOT ready, we show a loading screen.
-        return (<div>Loading</div>)
-    }
-  }
-
-  return renderEncryptedData();
+  return decryptedEmail === "" ? (
+    <div>Loading</div>
+  ) : (
+    <div>{decryptedEmail}</div>
+  );
 }
