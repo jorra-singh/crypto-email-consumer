@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import CryptoJS from "crypto-js";
 import { useRouter } from "next/router";
 
 export default function Email() {
